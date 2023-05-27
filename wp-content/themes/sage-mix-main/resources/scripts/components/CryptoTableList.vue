@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import orderBy from 'lodash-es/orderBy';
-import {ref} from 'vue';
+import {onMounted, ref, type Ref} from 'vue';
 import {SortDirection, TableColumns} from './../../types/table';
-import top10crypto from './../top10crypto.json';
-// import { useFetch } from '../composables/fetch';
+// import top10crypto from './../top10crypto.json';
+import type {TCoin} from '../../types/coins';
+import {useFetch} from '../composables/fetch';
 import Alert from './Alert.vue';
 import Filter from './Filter.vue';
 import Icon from './Icon.vue';
@@ -13,13 +14,13 @@ const loading = ref(false);
 const fetchCryptos = async () => {
   loading.value = true;
 
-  // const { data, error } = await useFetch(
-  //   'coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false&locale=en'
-  // );
+  const {data, error} = await useFetch<TCoin[]>(
+    'coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false&locale=en',
+  );
 
   loading.value = false;
 
-  // return { data, error };
+  return {data, error};
 };
 
 interface coins {
@@ -28,10 +29,18 @@ interface coins {
   [key: string]: any;
 }
 
-// const { data: fetchedItems, error } = await fetchCryptos();
-const fetchedItems = ref(top10crypto as coins[]);
-const filteredItems = ref(fetchedItems.value);
-const visibleItems = ref(fetchedItems.value);
+const fetchedItems = ref() as Ref<TCoin[]>;
+const fetchError = ref();
+const filteredItems = ref();
+const visibleItems = ref();
+
+onMounted(async () => {
+  const {data, error} = await fetchCryptos();
+
+  if (data.value)
+    fetchedItems.value = filteredItems.value = visibleItems.value = data.value;
+  if (error.value) fetchError.value = error.value;
+});
 
 const sort = ref({
   direction: SortDirection.Default,
@@ -166,16 +175,17 @@ const filter = (e: Event) => {
         </div>
       </div>
 
-      <!-- <div v-else-if="error" class="space-y-6 flex flex-col items-center">
+      <div v-else-if="fetchError" class="space-y-6 flex flex-col items-center">
         <Alert text="Failed to fetch Cryptocurrencies API" type="error" />
         <button
           type="button"
           @click="fetchCryptos()"
-          class="p-2 h-10 rounded transition-colors bg-slate-200 hover:bg-slate-300">
+          class="p-2 h-10 rounded transition-colors bg-slate-200 hover:bg-slate-300"
+        >
           <span v-if="!loading">Reload Cryptocurrencies</span>
           <Icon v-else icon="loader-5" class="animate-spin-slow inline-block" />
         </button>
-      </div> -->
+      </div>
     </div>
   </section>
 </template>

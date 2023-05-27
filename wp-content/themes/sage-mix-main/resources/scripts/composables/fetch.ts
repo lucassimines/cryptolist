@@ -1,9 +1,9 @@
-import { ref } from 'vue';
+import {ref, type Ref} from 'vue';
 
 const apiURL = 'https://api.coingecko.com/api/v3/';
 
-export const useFetch = async (path: string) => {
-  const data = ref(null);
+export const useFetch = async <T>(path: string) => {
+  const data = ref(null) as Ref<T>;
   const error = ref(null);
 
   await fetch(apiURL + path)
@@ -11,5 +11,5 @@ export const useFetch = async (path: string) => {
     .then((json) => (data.value = json))
     .catch((err) => (error.value = err));
 
-  return { data, error };
+  return {data, error};
 };
