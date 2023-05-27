@@ -136,75 +136,80 @@ if (jsonCoinTest) selectCoin(jsonCoin.id);
     <div className="max-w-main mx-auto">
       <div v-if="fetchedItems?.length">
         <Filter @filter="filter" />
-
-        <table class="w-full" v-if="visibleItems?.length">
-          <thead>
-            <tr
-              class="[&>td]:border-t [&>td]:py-4 [&>td]:whitespace-nowrap [&>td]:text-sm [&>td]:text-slate-500"
-            >
-              <td>
-                <span>#</span>
-              </td>
-              <td v-for="col in TableColumns">
-                <button
-                  @click="sortBy(col.name)"
-                  type="button"
-                  class="inline-flex gap-2 group"
-                >
-                  <span>{{ col.label }}</span>
-                  <Icon
-                    :icon="sort.key === col.name ? sort.icon : 'arrow-up-down'"
-                    :class="[
-                      'transition-colors text-slate-400 group-hover:text-emerald-500',
-                      {
-                        'text-emerald-400':
-                          sort.direction && sort.key === col.name,
-                      },
-                    ]"
-                  />
-                </button>
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(c, k) in visibleItems"
-              class="[&>td]:border-t [&>td]:py-4 [&>td]:whitespace-nowrap"
-            >
-              <td>{{ k + 1 }}</td>
-              <td>
-                <button
-                  type="button"
-                  @click="selectCoin(c.id)"
-                  class="flex items-center gap-4"
-                >
-                  <picture class="w-6 h-6 flex-center flex-none"
-                    ><img class="max-w-full max-h-full" :src="c.image"
-                  /></picture>
-                  <div>{{ c.name }}</div>
-                  <div class="text-slate-500 uppercase text-sm">
-                    {{ c.symbol }}
-                  </div>
-                </button>
-              </td>
-              <td>
-                <span>{{ c.low_24h }}</span>
-              </td>
-              <td>
-                <span>{{ c.high_24h }}</span>
-              </td>
-              <td>
-                <span>{{ c.total_volume }}</span>
-              </td>
-              <td>
-                <span>{{ c.price_change_24h }}</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div v-else>
-          <Alert text="No cryptocurrencies were found" />
+        <div class="w-full overflow-x-auto">
+          <table
+            class="w-full border-collapse min-w-[34rem]"
+            v-if="visibleItems?.length"
+          >
+            <thead>
+              <tr
+                class="[&>td]:border-t [&>td]:py-4 [&>td]:px-2 [&>td]:whitespace-nowrap [&>td]:text-sm [&>td]:text-slate-500"
+              >
+                <td>
+                  <span>#</span>
+                </td>
+                <td v-for="col in TableColumns">
+                  <button
+                    @click="sortBy(col.name)"
+                    type="button"
+                    class="inline-flex gap-2 group"
+                  >
+                    <span>{{ col.label }}</span>
+                    <Icon
+                      :icon="
+                        sort.key === col.name ? sort.icon : 'arrow-up-down'
+                      "
+                      :class="[
+                        'transition-colors text-slate-400 group-hover:text-emerald-500',
+                        {
+                          'text-emerald-400':
+                            sort.direction && sort.key === col.name,
+                        },
+                      ]"
+                    />
+                  </button>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(c, k) in visibleItems"
+                class="[&>td]:border-t [&>td]:py-4 [&>td]:px-2 [&>td]:whitespace-nowrap"
+              >
+                <td>{{ k + 1 }}</td>
+                <td class="sticky">
+                  <button
+                    type="button"
+                    @click="selectCoin(c.id)"
+                    class="flex items-center gap-4"
+                  >
+                    <picture class="w-6 h-6 flex-center flex-none"
+                      ><img class="max-w-full max-h-full" :src="c.image"
+                    /></picture>
+                    <div>{{ c.name }}</div>
+                    <div class="text-slate-500 uppercase text-sm">
+                      {{ c.symbol }}
+                    </div>
+                  </button>
+                </td>
+                <td>
+                  <span>{{ c.low_24h }}</span>
+                </td>
+                <td>
+                  <span>{{ c.high_24h }}</span>
+                </td>
+                <td>
+                  <span>{{ c.total_volume }}</span>
+                </td>
+                <td>
+                  <span>{{ c.price_change_24h }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div v-else>
+            <Alert text="No cryptocurrencies were found" />
+          </div>
         </div>
       </div>
 

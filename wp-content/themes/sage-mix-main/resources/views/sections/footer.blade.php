@@ -3,7 +3,7 @@
     </div>
 
     <div class="px-main py-10">
-        <div class="max-w-main mx-auto flex items-center justify-between gap-10">
+        <div class="max-w-main mx-auto flex items-center mobile-max:flex-col justify-between gap-10 mobile-max:gap-4">
             <div>
                 <span class="text-slate-300 text-sm2">&copy; {{ date('Y') }} All Rights Reserved.</span>
             </div>
