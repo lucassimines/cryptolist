@@ -7,7 +7,7 @@
             <div>
                 <span class="text-slate-300 text-sm2">&copy; {{ date('Y') }} All Rights Reserved.</span>
             </div>
-            <div class="text-emerald-400 font-medium">
+            <div class="text-primary font-medium">
                 {{ get_option('blogdescription') }}
             </div>
         </div>

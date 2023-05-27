@@ -4,7 +4,8 @@ mix
   .js('./resources/scripts/app.ts', 'dist')
   .vue()
   .setPublicPath('public')
-  .copy('./resources/fonts/', 'public/fonts')
+  .copy('./resources/fonts', 'public/fonts')
+  .copy('./resources/images', 'public/images')
   .copy('./resources/favicon.ico', 'public/favicon.ico')
   .postCss('./resources/styles/app.css', 'public/css', [
     require('tailwindcss'),

@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/wp-content/themes/sage-mix-main/public/fonts/remixicon/remixicon.css">
-  <link rel="icon" type="image/x-icon" href="/wp-content/themes/sage-mix-main/public/favicon.ico">
+  <link rel="stylesheet" href="/wp-content/themes/sage/public/fonts/remixicon/remixicon.css">
+  <link rel="icon" type="image/x-icon" href="/wp-content/themes/sage/public/favicon.ico">
   <?php wp_head(); ?>
 </head>
 

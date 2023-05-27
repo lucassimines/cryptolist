@@ -2,7 +2,11 @@ module.exports = {
   content: ['./app/**/*.php', './resources/**/*.{php,vue,js}'],
   theme: {
     extend: {
-      colors: {},
+      colors: {
+        primary: {
+          DEFAULT: '#00b80f',
+        },
+      },
       screens: {
         'mobile-max': {max: '767px'},
         'md-max': {max: '1023px'},
