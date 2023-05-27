@@ -32,15 +32,15 @@ const info = computed(() => {
 });
 
 const percentage = computed(() => {
-  const low_price = props.coin?.market_data?.low_24h?.usd;
-  const high_price = props.coin?.market_data?.high_24h?.usd;
+  const low = props.coin?.market_data?.low_24h?.usd;
+  const high = props.coin?.market_data?.high_24h?.usd;
 
-  const current_price = props.coin?.market_data?.current_price?.usd;
+  const currentPrice = props.coin?.market_data?.current_price?.usd;
 
-  const price_range = high_price - low_price;
-  const current_range = current_price - low_price;
+  const priceRange = high - low;
+  const currentRange = currentPrice - low;
 
-  return ((current_range / price_range) * 100).toFixed(2);
+  return ((currentRange / priceRange) * 100).toFixed(2);
 });
 </script>
 <template>
@@ -63,7 +63,7 @@ const percentage = computed(() => {
     </div>
 
     <div>
-      <ul class="columns-2 gap-8 -mt-2">
+      <ul class="md:columns-2 gap-8 -mt-2">
         <li v-for="i in info" class="flex gap-10 border-b py-2 justify-between">
           <div>
             <h2 class="text-sm text-slate-500">{{ i.label }}</h2>

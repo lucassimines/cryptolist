@@ -118,7 +118,7 @@ if (jsonCoinTest) selectCoin(jsonCoin.id);
 </script>
 
 <template>
-  <section className="px-main py-20">
+  <section className="px-main py-20 mobile-max:pt-6 mobile-max:pb-10">
     <Transition name="fade">
       <div
         class="fixed top-0 left-0 z-40 w-full h-full bg-black/50"
@@ -177,7 +177,7 @@ if (jsonCoinTest) selectCoin(jsonCoin.id);
                 class="[&>td]:border-t [&>td]:py-4 [&>td]:px-2 [&>td]:whitespace-nowrap"
               >
                 <td>{{ k + 1 }}</td>
-                <td class="sticky">
+                <td>
                   <button
                     type="button"
                     @click="selectCoin(c.id)"
