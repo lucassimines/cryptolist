@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import {onMounted, ref, type PropType, type Ref} from 'vue';
-import {useFetch} from '../../composables/fetch';
-import type {TCoin} from '../../types/coins';
+import { onMounted, ref, type PropType, type Ref } from 'vue';
+import { useFetch } from '../../composables/fetch';
+import type { TCoin } from '../../types/coins';
 import Alert from '../Alert.vue';
 import jsonCoin from './../../bitcoin.json';
 import Icon from './../Icon.vue';
