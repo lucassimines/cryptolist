@@ -28,3 +28,25 @@ html {
 #app {
   @apply min-h-screen flex flex-col;
 }
+
+.fade {
+  &-enter-active,
+  &-leave-active {
+    @apply transition-opacity ease-in-out;
+  }
+  &-enter-from,
+  &-leave-to {
+    @apply opacity-0;
+  }
+}
+
+.bounce {
+  &-enter-active,
+  &-leave-active {
+    @apply transition ease-in-out;
+  }
+  &-enter-from,
+  &-leave-to {
+    @apply opacity-0 translate-y-2;
+  }
+}

@@ -1,7 +1,7 @@
 export enum SortDirection {
   Default = '',
   Asc = 'asc',
-  Desc = 'desc'
+  Desc = 'desc',
 }
 
 interface TableColum {
@@ -12,14 +12,22 @@ interface TableColum {
 export const TableColumns: TableColum[] = [
   {
     label: 'Name',
-    name: 'name'
+    name: 'name',
   },
   {
-    label: '24h Low',
-    name: 'low_24h'
+    label: '24H Low',
+    name: 'low_24h',
   },
   {
-    label: '24h High',
-    name: 'high_24h'
-  }
+    label: '24H High',
+    name: 'high_24h',
+  },
+  {
+    label: 'Price Change 24H',
+    name: 'price_change_24h',
+  },
+  {
+    label: 'Total Volume',
+    name: 'total_volume',
+  },
 ];

@@ -2,6 +2,7 @@
 import orderBy from 'lodash-es/orderBy';
 import {onMounted, ref, type Ref} from 'vue';
 import {useFetch} from '../../composables/fetch';
+import jsonCoin from './../../bitcoin.json';
 import top10crypto from './../../top10crypto.json';
 import type {TCoin} from './../../types/coins';
 import {SortDirection, TableColumns} from './../../types/table';
@@ -12,7 +13,10 @@ import Icon from './../Icon.vue';
 import CryptoModal from './CryptoModal.vue';
 
 const loading = ref(false);
-const jsonTest = true;
+
+// Set to true to test if the API has reached the maximum limit
+const jsonListTest = true;
+const jsonCoinTest = false;
 
 const fetchCryptos = async () => {
   loading.value = true;
@@ -21,7 +25,7 @@ const fetchCryptos = async () => {
     'coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false&locale=en',
   );
 
-  if (jsonTest) data.value = top10crypto;
+  if (jsonListTest) data.value = top10crypto;
 
   loading.value = false;
 
@@ -105,14 +109,29 @@ const filter = (e: Event) => {
 };
 
 const selectedCoin = ref() as Ref<TCoin['id']>;
+
 const selectCoin = (id: TCoin['id']) => {
   selectedCoin.value = id;
 };
+
+if (jsonCoinTest) selectCoin(jsonCoin.id);
 </script>
 
 <template>
   <section className="px-main py-20">
-    <CryptoModal :coin-id="selectedCoin" v-if="selectedCoin" />
+    <Transition name="fade">
+      <div
+        class="fixed top-0 left-0 z-40 w-full h-full bg-black/50"
+        v-if="selectedCoin"
+      ></div>
+    </Transition>
+    <Transition name="bounce">
+      <CryptoModal
+        @close="selectedCoin = ''"
+        v-if="selectedCoin"
+        :coin-id="selectedCoin"
+      />
+    </Transition>
 
     <div className="max-w-main mx-auto">
       <div v-if="fetchedItems?.length">
@@ -173,6 +192,12 @@ const selectCoin = (id: TCoin['id']) => {
               </td>
               <td>
                 <span>{{ c.high_24h }}</span>
+              </td>
+              <td>
+                <span>{{ c.total_volume }}</span>
+              </td>
+              <td>
+                <span>{{ c.price_change_24h }}</span>
               </td>
             </tr>
           </tbody>
