@@ -6,6 +6,7 @@ import {SortDirection, TableColumns} from './../../types/table';
 import type {TCoin} from '../../types/coins';
 import {useFetch} from '../composables/fetch';
 import Alert from './Alert.vue';
+import Btn from './Btn.vue';
 import Filter from './Filter.vue';
 import Icon from './Icon.vue';
 
@@ -171,14 +172,12 @@ const filter = (e: Event) => {
 
       <div v-else-if="fetchError" class="space-y-6 flex flex-col items-center">
         <Alert text="Failed to fetch Cryptocurrencies API" type="error" />
-        <button
-          type="button"
+
+        <Btn
           @click="fetchCryptos()"
-          class="p-2 h-10 rounded transition-colors bg-slate-200 hover:bg-slate-300"
-        >
-          <span v-if="!loading">Reload Cryptocurrencies</span>
-          <Icon v-else icon="loader-5" class="animate-spin-slow inline-block" />
-        </button>
+          :loading="loading"
+          text="Reload Cryptocurrencies"
+        />
       </div>
     </div>
   </section>
