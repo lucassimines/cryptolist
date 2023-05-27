@@ -23,12 +23,6 @@ const fetchCryptos = async () => {
   return {data, error};
 };
 
-interface coins {
-  name: string;
-  symbol: string;
-  [key: string]: any;
-}
-
 const fetchedItems = ref() as Ref<TCoin[]>;
 const fetchError = ref();
 const filteredItems = ref();
@@ -99,7 +93,7 @@ const filter = (e: Event) => {
     // Filter by given colum keys
     return filterableColumnKeys.some((key) => {
       // It's good to use toLowerCase() to prevent the item from being missed if the filter term has a different case.
-      const temp = s[key as keyof coins];
+      const temp = s[key];
       return temp.toLowerCase().includes(target.value?.toLowerCase());
     });
   });
