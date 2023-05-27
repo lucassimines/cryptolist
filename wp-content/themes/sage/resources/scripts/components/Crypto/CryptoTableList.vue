@@ -94,8 +94,8 @@ const sortBy = (col: string) => {
 
 const filterableColumnKeys = ['name', 'symbol'];
 
-const filter = (e: Event) => {
-  const target = e.target as HTMLInputElement;
+const filter = (term: string) => {
+  // const target = e.target as HTMLInputElement;
 
   // Filters the items by name
   filteredItems.value = visibleItems.value = fetchedItems.value.filter((s) => {
@@ -103,7 +103,7 @@ const filter = (e: Event) => {
     return filterableColumnKeys.some((key) => {
       // It's good to use toLowerCase() to prevent the item from being missed if the filter term has a different case.
       const temp = s[key];
-      return temp.toLowerCase().includes(target.value?.toLowerCase());
+      return temp.toLowerCase().includes(term?.toLowerCase());
     });
   });
 };
@@ -162,7 +162,7 @@ if (jsonCoinTest) selectCoin(jsonCoin.id);
                       :class="[
                         'transition-colors text-slate-400 group-hover:text-emerald-500',
                         {
-                          'text-emerald-400':
+                          'text-primary':
                             sort.direction && sort.key === col.name,
                         },
                       ]"

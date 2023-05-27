@@ -5,6 +5,7 @@ module.exports = {
       colors: {
         primary: {
           DEFAULT: '#00b80f',
+          dark: '#008706',
         },
       },
       screens: {
