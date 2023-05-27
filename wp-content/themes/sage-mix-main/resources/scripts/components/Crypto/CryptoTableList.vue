@@ -1,16 +1,18 @@
 <script lang="ts" setup>
 import orderBy from 'lodash-es/orderBy';
 import {onMounted, ref, type Ref} from 'vue';
+import {useFetch} from '../../composables/fetch';
+import top10crypto from './../../top10crypto.json';
+import type {TCoin} from './../../types/coins';
 import {SortDirection, TableColumns} from './../../types/table';
-// import top10crypto from './../top10crypto.json';
-import type {TCoin} from '../../types/coins';
-import {useFetch} from '../composables/fetch';
-import Alert from './Alert.vue';
-import Btn from './Btn.vue';
-import Filter from './Filter.vue';
-import Icon from './Icon.vue';
+import Alert from './../Alert.vue';
+import Btn from './../Btn.vue';
+import Filter from './../Filter.vue';
+import Icon from './../Icon.vue';
+import CryptoModal from './CryptoModal.vue';
 
 const loading = ref(false);
+const jsonTest = true;
 
 const fetchCryptos = async () => {
   loading.value = true;
@@ -18,6 +20,8 @@ const fetchCryptos = async () => {
   const {data, error} = await useFetch<TCoin[]>(
     'coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false&locale=en',
   );
+
+  if (jsonTest) data.value = top10crypto;
 
   loading.value = false;
 
@@ -99,11 +103,16 @@ const filter = (e: Event) => {
     });
   });
 };
+
+const selectedCoin = ref() as Ref<TCoin['id']>;
+const selectCoin = (id: TCoin['id']) => {
+  selectedCoin.value = id;
+};
 </script>
 
 <template>
   <section className="px-main py-20">
-    <!-- <CryptoInfoModal /> -->
+    <CryptoModal :coin-id="selectedCoin" v-if="selectedCoin" />
 
     <div className="max-w-main mx-auto">
       <div v-if="fetchedItems?.length">
@@ -145,7 +154,11 @@ const filter = (e: Event) => {
             >
               <td>{{ k + 1 }}</td>
               <td>
-                <div class="flex items-center gap-4">
+                <button
+                  type="button"
+                  @click="selectCoin(c.id)"
+                  class="flex items-center gap-4"
+                >
                   <picture class="w-6 h-6 flex-center flex-none"
                     ><img class="max-w-full max-h-full" :src="c.image"
                   /></picture>
@@ -153,7 +166,7 @@ const filter = (e: Event) => {
                   <div class="text-slate-500 uppercase text-sm">
                     {{ c.symbol }}
                   </div>
-                </div>
+                </button>
               </td>
               <td>
                 <span>{{ c.low_24h }}</span>

@@ -1,9 +1,4 @@
 const mix = require('laravel-mix');
-const path = require('path');
-
-mix.alias({
-  '@fonts': path.join(__dirname, 'resources/fonts'),
-});
 
 mix
   .js('./resources/scripts/app.ts', 'dist')

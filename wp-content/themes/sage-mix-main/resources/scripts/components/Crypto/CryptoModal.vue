@@ -1,26 +1,28 @@
 <script lang="ts" setup>
-import Icon from '@components/Icon.vue';
-import {onMounted, ref, type Ref} from 'vue';
-import type {TCoin} from '../../../types/coins';
+import {onMounted, ref, type PropType, type Ref} from 'vue';
 import {useFetch} from '../../composables/fetch';
-// import coin from './../../bitcoin.json';
+import type {TCoin} from '../../types/coins';
+import jsonCoin from './../../bitcoin.json';
+import Icon from './../Icon.vue';
 
 const props = defineProps({
   coinId: {
-    type: String,
+    type: String as PropType<TCoin['id']>,
     required: true,
   },
 });
 
 const loading = ref(false);
 
-loading.value = true;
+loading.value = false;
 
 const coin = ref() as Ref<TCoin>;
+const jsonTest = true;
 
 onMounted(async () => {
   const {data, error} = await useFetch<TCoin>(`coins/${props.coinId}`);
   if (data.value) coin.value = data.value;
+  if (jsonTest) data.value = jsonCoin;
 }),
   (loading.value = false);
 </script>
