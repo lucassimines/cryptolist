@@ -1,8 +1,15 @@
 <script lang="ts" setup>
-const test = 'test';
-console.log(test);
+import {defineAsyncComponent} from 'vue';
+import CryptoTableList from './components/CryptoTableList.vue';
+
+const AsyncComponent = defineAsyncComponent({
+  loader: () => import('./components/CryptoTableList.vue'),
+});
 </script>
 
 <template>
-  <div>{{ test }}</div>
+  <div>
+    <!-- <AsyncComponent /> -->
+    <CryptoTableList />
+  </div>
 </template>

@@ -1,3 +1,30 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@layer components {
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  .px-main {
+    @apply desktop-min:px-16 md:tablet-max:px-12 mobile-max:px-6;
+  }
+  .py-main {
+    @apply desktop-min:py-16 md:tablet-max:py-12 mobile-max:py-6;
+  }
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.4;
+}
+
+html {
+  @apply font-primary;
+}
+
+#app {
+  @apply min-h-screen flex flex-col;
+}

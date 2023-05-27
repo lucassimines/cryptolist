@@ -1,21 +1,7 @@
-<a class="sr-only focus:not-sr-only" href="#main">
-  {{ __('Skip to content') }}
-</a>
+@include('sections.header')
 
+<main class="min-h-full flex-grow">
+    @yield('content')
+</main>
 
-
-<div class="max-w-screen-xl mx-auto">
-  @include('sections.header')
-
-    <main id="main" class="main">
-      @yield('content')
-    </main>
-
-    @hasSection('sidebar')
-      <aside class="sidebar">
-        @yield('sidebar')
-      </aside>
-    @endif
-
-  @include('sections.footer')
-</div>
+@include('sections.footer')

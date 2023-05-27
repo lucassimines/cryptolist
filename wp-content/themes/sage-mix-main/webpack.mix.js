@@ -1,18 +1,21 @@
 const mix = require('laravel-mix');
 const path = require('path');
 
-const alias = {
-  '@': path.resolve(__dirname, 'resources/js'),
-};
+mix.alias({
+  '@fonts': path.join(__dirname, 'resources/fonts'),
+});
 
 mix
+  .js('./resources/scripts/app.ts', 'dist')
   .vue()
-  .alias(alias)
-  .js('resources/scripts/app.ts', 'dist')
   .setPublicPath('public')
-  .postCss('resources/styles/app.css', 'public/css', [require('tailwindcss')]);
+  .copy('./resources/fonts/', 'public/fonts')
+  .copy('./resources/favicon.ico', 'public/favicon.ico')
+  .postCss('./resources/styles/app.css', 'public/css', [
+    require('tailwindcss'),
+  ]);
 
-mix.browserSync('http://localhost:10044');
+// mix.browserSync('http://localhost:3000');
 
 mix.webpackConfig({
   resolve: {
