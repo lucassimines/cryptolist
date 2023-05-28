@@ -69,7 +69,7 @@ const closeModal = () => emit('close');
 
       <div
         ref="target"
-        class="p-6 bg-white shadow-lg rounded-md w-full h-full min-h-[12rem] max-h-[22rem] mobile-max:max-h-[75vh] overflow-auto relative"
+        class="p-6 bg-white shadow-lg rounded-md w-full h-full min-h-[12rem] max-h-[30rem] mobile-max:max-h-[75vh] overflow-auto relative"
         :class="{ 'flex-center': !coin }"
       >
         <template v-if="coin">

@@ -9,15 +9,15 @@ ul {
 </style>
 
 <script lang="ts" setup>
-import {computed, type PropType} from 'vue';
-import type {TCoin} from '../../types/coins';
+import { computed, type PropType } from 'vue';
+import type { TCoin } from '../../types/coins';
 import Icon from '../Icon.vue';
 
 const props = defineProps({
   coin: {
     type: Object as PropType<TCoin>,
-    required: true,
-  },
+    required: true
+  }
 });
 
 const homepage = computed(() => props.coin?.links?.homepage[0]);
@@ -25,7 +25,7 @@ const homepage = computed(() => props.coin?.links?.homepage[0]);
 
 <template>
   <div>
-    <ul class="flex flex-wrap gap-4">
+    <ul class="flex flex-wrap gap-x-4 gap-y-2">
       <li v-if="homepage">
         <a :href="homepage" target="_blank">
           <Icon icon="external-link" />
@@ -34,20 +34,14 @@ const homepage = computed(() => props.coin?.links?.homepage[0]);
       </li>
 
       <li v-if="coin.links?.facebook_username">
-        <a
-          :href="`https://www.facebook.com/${coin.links?.facebook_username}`"
-          target="_blank"
-        >
+        <a :href="`https://www.facebook.com/${coin.links?.facebook_username}`" target="_blank">
           <Icon icon="facebook-circle" />
           <span>{{ coin.links?.facebook_username }}</span>
         </a>
       </li>
 
       <li v-if="coin.links?.twitter_screen_name">
-        <a
-          :href="`https://twitter.com/${coin.links?.twitter_screen_name}`"
-          target="_blank"
-        >
+        <a :href="`https://twitter.com/${coin.links?.twitter_screen_name}`" target="_blank">
           <Icon icon="twitter" />
           <span>{{ coin.links?.twitter_screen_name }}</span>
         </a>

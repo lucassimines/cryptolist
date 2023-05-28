@@ -74,7 +74,7 @@ const percentage = computed(() => {
 });
 </script>
 <template>
-  <div v-if="coin" class="mt-6 space-y-10">
+  <div v-if="coin" class="mt-6 space-y-10 mobile-max:space-y-6">
     <header class="space-y-3">
       <div class="overflow-hidden bg-slate-200 w-full h-2.5 rounded-full">
         <div
