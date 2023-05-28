@@ -173,12 +173,16 @@ if (jsonCoinTest) selectCoin(jsonCoin.id);
                   <button
                     type="button"
                     @click="selectCoin(c.id)"
-                    class="flex items-center gap-4"
+                    class="flex items-center gap-4 group"
                   >
                     <picture class="w-6 h-6 flex-center flex-none"
                       ><img class="max-w-full max-h-full" :src="c.image"
                     /></picture>
-                    <div>{{ c.name }}</div>
+                    <div>
+                      <h3 class="transition-colors group-hover:text-primary">
+                        {{ c.name }}
+                      </h3>
+                    </div>
                     <div class="text-slate-500 uppercase text-sm">
                       {{ c.symbol }}
                     </div>

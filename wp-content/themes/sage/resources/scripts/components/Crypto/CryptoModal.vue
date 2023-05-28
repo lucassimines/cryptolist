@@ -35,7 +35,17 @@ const fetchCoin = async () => {
   loading.value = false;
 };
 
+const target = ref(null) as any;
+
+// Click outside modal to close
+const handleClickOutside = (event: Event) => {
+  if (target.value && !target.value.contains(event.target as HTMLElement))
+    closeModal();
+};
+
 onMounted(() => {
+  document.addEventListener('mousedown', handleClickOutside);
+
   if (jsonTest) {
     coin.value = jsonCoin;
     return;
@@ -59,6 +69,7 @@ const closeModal = () => emit('close');
       </button>
 
       <div
+        ref="target"
         class="p-6 bg-white shadow-lg rounded-md w-full h-full min-h-[12rem] max-h-[22rem] mobile-max:max-h-[75vh] overflow-auto relative"
         :class="{'flex-center': !coin}"
       >
@@ -80,7 +91,7 @@ const closeModal = () => emit('close');
         </template>
 
         <template v-else>
-          <Alert text="Loading..." />
+          <div class="text-slate-400 text-md">Loading...</div>
         </template>
       </div>
     </div>
