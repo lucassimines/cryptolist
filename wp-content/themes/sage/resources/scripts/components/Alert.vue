@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import type {PropType} from 'vue';
+import type { PropType } from 'vue';
 import Icon from './Icon.vue';
 
 defineProps({
   text: {
     type: String,
-    required: true,
+    required: true
   },
   type: {
     type: String as PropType<'default' | 'danger'>,
-    default: 'default',
-  },
+    default: 'default'
+  }
 });
 </script>
 

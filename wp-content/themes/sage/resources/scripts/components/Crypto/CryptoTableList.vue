@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import orderBy from 'lodash-es/orderBy';
-import {onMounted, ref, type Ref} from 'vue';
-import {useFetch} from '../../composables/fetch';
+import { onMounted, ref, type Ref } from 'vue';
+import { useFetch } from '../../composables/fetch';
 import jsonCoin from './../../bitcoin.json';
 import top10crypto from './../../top10crypto.json';
-import type {TCoin} from './../../types/coins';
-import {SortDirection, TableColumns} from './../../types/table';
+import type { TCoin } from './../../types/coins';
+import { SortDirection, TableColumns } from './../../types/table';
+import { USDollar } from './../../utils/format';
 import Alert from './../Alert.vue';
 import Btn from './../Btn.vue';
 import Filter from './../Filter.vue';
@@ -15,8 +16,8 @@ import CryptoModal from './CryptoModal.vue';
 const loading = ref(false);
 
 // Set to true to test the API with the imported json
-const jsonListTest = false;
 const jsonCoinTest = false;
+const jsonListTest = false;
 
 // Set Data values to fetched items, filtered items and visible items
 const setDataValues = (data: TCoin[]) => {
@@ -31,8 +32,8 @@ const fetchCryptos = async () => {
 
   loading.value = true;
 
-  const {data, error} = await useFetch<TCoin[]>(
-    'coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false&locale=en',
+  const { data, error } = await useFetch<TCoin[]>(
+    'coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false&locale=en'
   );
   loading.value = false;
 
@@ -51,7 +52,7 @@ const sort = ref({
   direction: SortDirection.Default,
   key: '',
   icon: 'arrow-up-down',
-  count: 0,
+  count: 0
 });
 
 const sortBy = (col: string) => {
@@ -111,28 +112,18 @@ if (jsonCoinTest) selectCoin(jsonCoin.id);
 <template>
   <section className="px-main py-20 mobile-max:pt-6 mobile-max:pb-10">
     <Transition name="fade">
-      <div
-        class="fixed top-0 left-0 z-40 w-full h-full bg-black/50"
-        v-if="selectedCoin"
-      ></div>
+      <div class="fixed top-0 left-0 z-40 w-full h-full bg-black/50" v-if="selectedCoin"></div>
     </Transition>
 
     <Transition name="bounce">
-      <CryptoModal
-        @close="selectedCoin = ''"
-        v-if="selectedCoin"
-        :coin-id="selectedCoin"
-      />
+      <CryptoModal @close="selectedCoin = ''" v-if="selectedCoin" :coin-id="selectedCoin" />
     </Transition>
 
     <div className="max-w-main mx-auto">
       <div v-if="fetchedItems?.length">
         <Filter @filter="setFilteredItems" :items="fetchedItems" />
         <div class="w-full overflow-x-auto">
-          <table
-            class="w-full border-collapse min-w-[34rem]"
-            v-if="visibleItems?.length"
-          >
+          <table class="w-full border-collapse min-w-[34rem]" v-if="visibleItems?.length">
             <thead>
               <tr
                 class="[&>td]:border-t [&>td]:py-4 [&>td]:px-2 [&>td]:whitespace-nowrap [&>td]:text-sm [&>td]:text-slate-500"
@@ -140,23 +131,16 @@ if (jsonCoinTest) selectCoin(jsonCoin.id);
                 <td>
                   <span>#</span>
                 </td>
-                <td v-for="col in TableColumns">
-                  <button
-                    @click="sortBy(col.name)"
-                    type="button"
-                    class="inline-flex gap-2 group"
-                  >
+                <td v-for="col in TableColumns" class="last:text-right">
+                  <button @click="sortBy(col.name)" type="button" class="inline-flex gap-2 group">
                     <span>{{ col.label }}</span>
                     <Icon
-                      :icon="
-                        sort.key === col.name ? sort.icon : 'arrow-up-down'
-                      "
+                      :icon="sort.key === col.name ? sort.icon : 'arrow-up-down'"
                       :class="[
                         'transition-colors text-slate-400 group-hover:text-emerald-500',
                         {
-                          'text-primary':
-                            sort.direction && sort.key === col.name,
-                        },
+                          'text-primary': sort.direction && sort.key === col.name
+                        }
                       ]"
                     />
                   </button>
@@ -189,16 +173,23 @@ if (jsonCoinTest) selectCoin(jsonCoin.id);
                   </button>
                 </td>
                 <td>
-                  <span>{{ c.low_24h }}</span>
+                  <span>{{ USDollar.format(c.low_24h) }}</span>
                 </td>
                 <td>
-                  <span>{{ c.high_24h }}</span>
+                  <span>{{ USDollar.format(c.high_24h) }}</span>
                 </td>
                 <td>
-                  <span>{{ c.total_volume }}</span>
+                  <span
+                    :class="
+                      c.price_change_percentage_24h.toFixed(2) > 0
+                        ? 'text-green-600'
+                        : 'text-red-500'
+                    "
+                    >{{ `${c.price_change_percentage_24h.toFixed(2)}%` }}</span
+                  >
                 </td>
-                <td>
-                  <span>{{ c.price_change_24h }}</span>
+                <td class="text-right">
+                  <span>{{ USDollar.format(c.total_volume) }}</span>
                 </td>
               </tr>
             </tbody>
@@ -212,11 +203,7 @@ if (jsonCoinTest) selectCoin(jsonCoin.id);
       <div v-else-if="fetchError" class="space-y-6 flex flex-col items-center">
         <Alert text="Failed to fetch Cryptocurrencies API" type="danger" />
 
-        <Btn
-          @click="fetchCryptos()"
-          :loading="loading"
-          text="Reload Cryptocurrencies"
-        />
+        <Btn @click="fetchCryptos()" :loading="loading" text="Reload Cryptocurrencies" />
       </div>
     </div>
   </section>

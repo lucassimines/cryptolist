@@ -5,7 +5,7 @@
 ## Using the application
 
 ### Features
-- List the top 10 cryptocurrencies provided by [coingeco](https://www.coingecko.com) API.
+- List the top 10 cryptocurrencies provided by [CoinGecko](https://www.coingecko.com) API.
 - View detailed coin info
 - Fully responsive
 
@@ -16,6 +16,7 @@
 
 #### Technologies used
 - Vue 3
+- Typescript
 - TailwindCSS
 - Wordpress
 - Roots Sage theme

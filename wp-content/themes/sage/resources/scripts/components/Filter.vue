@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import {ref, watch, type PropType, type Ref} from 'vue';
-import type {TCoin} from '../types/coins';
+import { ref, watch, type PropType, type Ref } from 'vue';
+import type { TCoin } from '../types/coins';
 import Icon from './Icon.vue';
 
 const props = defineProps({

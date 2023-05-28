@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import {onMounted, ref, type PropType, type Ref} from 'vue';
-import {useFetch} from '../../composables/fetch';
-import type {TCoin} from '../../types/coins';
+import { onMounted, ref, type PropType, type Ref } from 'vue';
+import { useFetch } from '../../composables/fetch';
+import type { TCoin } from '../../types/coins';
 import Alert from '../Alert.vue';
 import jsonCoin from './../../bitcoin.json';
 import Icon from './../Icon.vue';
@@ -10,8 +10,8 @@ import CryptoInfo from './CryptoInfo.vue';
 const props = defineProps({
   coinId: {
     type: String as PropType<TCoin['id']>,
-    required: true,
-  },
+    required: true
+  }
 });
 
 const emit = defineEmits(['close']);
@@ -27,7 +27,7 @@ const jsonTest = false;
 const fetchCoin = async () => {
   loading.value = true;
 
-  const {data, error} = await useFetch<TCoin>(`coins/${props.coinId}`);
+  const { data, error } = await useFetch<TCoin>(`coins/${props.coinId}`);
 
   if (data.value) coin.value = data.value;
   if (error.value) fetchError.value = error.value;
@@ -39,8 +39,7 @@ const target = ref(null) as any;
 
 // Click outside modal to close
 const handleClickOutside = (event: Event) => {
-  if (target.value && !target.value.contains(event.target as HTMLElement))
-    closeModal();
+  if (target.value && !target.value.contains(event.target as HTMLElement)) closeModal();
 };
 
 onMounted(() => {
@@ -71,7 +70,7 @@ const closeModal = () => emit('close');
       <div
         ref="target"
         class="p-6 bg-white shadow-lg rounded-md w-full h-full min-h-[12rem] max-h-[22rem] mobile-max:max-h-[75vh] overflow-auto relative"
-        :class="{'flex-center': !coin}"
+        :class="{ 'flex-center': !coin }"
       >
         <template v-if="coin">
           <header>
@@ -79,7 +78,14 @@ const closeModal = () => emit('close');
               <picture class="w-6 h-6 flex-center flex-none"
                 ><img class="max-w-full max-h-full" :src="coin.image?.small"
               /></picture>
-              <h1 class="font-medium text-xl">{{ coin.name }}</h1>
+              <div class="flex items-center space-x-2">
+                <h1 class="font-medium text-xl leading-tight">
+                  {{ coin.name }}
+                </h1>
+                <span class="uppercase leading-tight font-medium text-slate-500">{{
+                  coin.symbol
+                }}</span>
+              </div>
             </div>
           </header>
 
