@@ -15,7 +15,7 @@ import CryptoModal from './CryptoModal.vue';
 const loading = ref(false);
 
 // Set to true to test the API with the imported json
-const jsonListTest = true;
+const jsonListTest = false;
 const jsonCoinTest = false;
 
 // Set Data values to fetched items, filtered items and visible items
