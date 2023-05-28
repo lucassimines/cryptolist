@@ -18,19 +18,31 @@ const emit = defineEmits(['close']);
 
 const loading = ref(false);
 
-loading.value = false;
-
 const coin = ref() as Ref<TCoin>;
-const jsonTest = true;
 const fetchError = ref();
 
-onMounted(async () => {
+// Set to true to test with json
+const jsonTest = false;
+
+const fetchCoin = async () => {
+  loading.value = true;
+
   const {data, error} = await useFetch<TCoin>(`coins/${props.coinId}`);
+
   if (data.value) coin.value = data.value;
-  if (jsonTest) data.value = jsonCoin;
   if (error.value) fetchError.value = error.value;
-}),
-  (loading.value = false);
+
+  loading.value = false;
+};
+
+onMounted(() => {
+  if (jsonTest) {
+    coin.value = jsonCoin;
+    return;
+  }
+
+  fetchCoin();
+});
 
 const closeModal = () => emit('close');
 </script>
@@ -47,7 +59,8 @@ const closeModal = () => emit('close');
       </button>
 
       <div
-        class="p-6 bg-white shadow-lg rounded-md w-full h-full max-h-[22rem] mobile-max:max-h-[75vh] overflow-auto relative"
+        class="p-6 bg-white shadow-lg rounded-md w-full h-full min-h-[12rem] max-h-[22rem] mobile-max:max-h-[75vh] overflow-auto relative"
+        :class="{'flex-center': !coin}"
       >
         <template v-if="coin">
           <header>
@@ -63,7 +76,7 @@ const closeModal = () => emit('close');
         </template>
 
         <template v-else-if="fetchError">
-          <Alert text="Failed to fetch Crypto info" type="error" />
+          <Alert text="Failed to fetch Crypto info" type="danger" />
         </template>
 
         <template v-else>

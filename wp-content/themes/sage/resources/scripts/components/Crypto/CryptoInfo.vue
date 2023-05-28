@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {computed} from 'vue';
 
+// Require coin object as props
 const props = defineProps({
   coin: {
     type: Object,
@@ -8,6 +9,7 @@ const props = defineProps({
   },
 });
 
+// Create info data list
 const info = computed(() => {
   const data = [
     {
@@ -28,6 +30,7 @@ const info = computed(() => {
     },
   ];
 
+  // Filter the list checking if value exists
   return data.filter((d) => d.value);
 });
 
@@ -37,9 +40,12 @@ const percentage = computed(() => {
 
   const currentPrice = props.coin?.market_data?.current_price?.usd;
 
+  // Get the price range
   const priceRange = high - low;
+  // Get the current range
   const currentRange = currentPrice - low;
 
+  // Calculate the percentage
   return ((currentRange / priceRange) * 100).toFixed(2);
 });
 </script>

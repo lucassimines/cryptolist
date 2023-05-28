@@ -7,6 +7,7 @@ const term = ref('');
 const emit = defineEmits(['filter']);
 
 watch(term, (t) => {
+  // Emit filter value to listen on parent component
   emit('filter', t);
 });
 </script>

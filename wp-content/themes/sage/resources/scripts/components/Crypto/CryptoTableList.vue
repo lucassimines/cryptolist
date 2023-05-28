@@ -14,9 +14,14 @@ import CryptoModal from './CryptoModal.vue';
 
 const loading = ref(false);
 
-// Set to true to test if the API has reached the maximum limit
-const jsonListTest = true;
+// Set to true to test the API with the imported json
+const jsonListTest = false;
 const jsonCoinTest = false;
+
+// Set Data values to fetched items, filtered items and visible items
+const setDataValues = (data: TCoin[]) => {
+  fetchedItems.value = filteredItems.value = visibleItems.value = data;
+};
 
 const fetchCryptos = async () => {
   loading.value = true;
@@ -24,10 +29,10 @@ const fetchCryptos = async () => {
   const {data, error} = await useFetch<TCoin[]>(
     'coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false&locale=en',
   );
-
-  if (jsonListTest) data.value = top10crypto;
-
   loading.value = false;
+
+  if (data.value) setDataValues(data.value);
+  if (error.value) fetchError.value = error.value;
 
   return {data, error};
 };
@@ -37,12 +42,13 @@ const fetchError = ref();
 const filteredItems = ref();
 const visibleItems = ref();
 
-onMounted(async () => {
-  const {data, error} = await fetchCryptos();
+onMounted(() => {
+  if (jsonListTest) {
+    setDataValues(top10crypto);
+    return;
+  }
 
-  if (data.value)
-    fetchedItems.value = filteredItems.value = visibleItems.value = data.value;
-  if (error.value) fetchError.value = error.value;
+  fetchCryptos();
 });
 
 const sort = ref({
@@ -98,12 +104,12 @@ const filter = (term: string) => {
   // const target = e.target as HTMLInputElement;
 
   // Filters the items by name
-  filteredItems.value = visibleItems.value = fetchedItems.value.filter((s) => {
+  filteredItems.value = visibleItems.value = fetchedItems.value.filter((i) => {
     // Filter by given colum keys
     return filterableColumnKeys.some((key) => {
-      // It's good to use toLowerCase() to prevent the item from being missed if the filter term has a different case.
-      const temp = s[key];
-      return temp.toLowerCase().includes(term?.toLowerCase());
+      const itemKey = i[key];
+      // Use toLowerCase() to prevent the item from being missed if the filter term has a different case.
+      return itemKey.toLowerCase().includes(term?.toLowerCase());
     });
   });
 };
@@ -125,6 +131,7 @@ if (jsonCoinTest) selectCoin(jsonCoin.id);
         v-if="selectedCoin"
       ></div>
     </Transition>
+
     <Transition name="bounce">
       <CryptoModal
         @close="selectedCoin = ''"
@@ -214,7 +221,7 @@ if (jsonCoinTest) selectCoin(jsonCoin.id);
       </div>
 
       <div v-else-if="fetchError" class="space-y-6 flex flex-col items-center">
-        <Alert text="Failed to fetch Cryptocurrencies API" type="error" />
+        <Alert text="Failed to fetch Cryptocurrencies API" type="danger" />
 
         <Btn
           @click="fetchCryptos()"
