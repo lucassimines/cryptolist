@@ -15,7 +15,7 @@ import CryptoModal from './CryptoModal.vue';
 const loading = ref(false);
 
 // Set to true to test the API with the imported json
-const jsonListTest = false;
+const jsonListTest = true;
 const jsonCoinTest = false;
 
 // Set Data values to fetched items, filtered items and visible items
@@ -24,6 +24,11 @@ const setDataValues = (data: TCoin[]) => {
 };
 
 const fetchCryptos = async () => {
+  if (jsonListTest) {
+    setDataValues(top10crypto);
+    return;
+  }
+
   loading.value = true;
 
   const {data, error} = await useFetch<TCoin[]>(
@@ -33,8 +38,6 @@ const fetchCryptos = async () => {
 
   if (data.value) setDataValues(data.value);
   if (error.value) fetchError.value = error.value;
-
-  return {data, error};
 };
 
 const fetchedItems = ref() as Ref<TCoin[]>;
@@ -42,14 +45,7 @@ const fetchError = ref();
 const filteredItems = ref();
 const visibleItems = ref();
 
-onMounted(() => {
-  if (jsonListTest) {
-    setDataValues(top10crypto);
-    return;
-  }
-
-  fetchCryptos();
-});
+onMounted(() => fetchCryptos());
 
 const sort = ref({
   direction: SortDirection.Default,
@@ -98,20 +94,9 @@ const sortBy = (col: string) => {
   sort.value.count++;
 };
 
-const filterableColumnKeys = ['name', 'symbol'];
-
-const filter = (term: string) => {
-  // const target = e.target as HTMLInputElement;
-
-  // Filters the items by name
-  filteredItems.value = visibleItems.value = fetchedItems.value.filter((i) => {
-    // Filter by given colum keys
-    return filterableColumnKeys.some((key) => {
-      const itemKey = i[key];
-      // Use toLowerCase() to prevent the item from being missed if the filter term has a different case.
-      return itemKey.toLowerCase().includes(term?.toLowerCase());
-    });
-  });
+// Listen to filter emit and set filtered items
+const setFilteredItems = (v: TCoin[]) => {
+  filteredItems.value = visibleItems.value = v;
 };
 
 const selectedCoin = ref() as Ref<TCoin['id']>;
@@ -142,7 +127,7 @@ if (jsonCoinTest) selectCoin(jsonCoin.id);
 
     <div className="max-w-main mx-auto">
       <div v-if="fetchedItems?.length">
-        <Filter @filter="filter" />
+        <Filter @filter="setFilteredItems" :items="fetchedItems" />
         <div class="w-full overflow-x-auto">
           <table
             class="w-full border-collapse min-w-[34rem]"
