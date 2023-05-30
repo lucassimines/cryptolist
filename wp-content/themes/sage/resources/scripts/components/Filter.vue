@@ -6,8 +6,8 @@ import Icon from './Icon.vue';
 const props = defineProps({
   items: {
     type: Object as PropType<TCoin[]>,
-    required: true,
-  },
+    required: true
+  }
 });
 
 const term = ref('');
@@ -19,8 +19,6 @@ const filterableColumnKeys = ['name', 'symbol'];
 const filteredItems = ref() as Ref<TCoin[]>;
 
 const filter = (term: string) => {
-  // const target = e.target as HTMLInputElement;
-
   // Filters the items by name
   filteredItems.value = props.items.filter((i) => {
     // Filter by given colum keys
@@ -52,15 +50,10 @@ watch(term, (t) => {
       <Icon
         v-if="!term"
         icon="search"
-        :class="`transition-colors ${
-          term.length ? 'text-primary' : 'text-slate-400'
-        }`"
+        :class="`transition-colors ${term.length ? 'text-primary' : 'text-slate-400'}`"
       />
       <button type="button" @click="term = ''" v-else>
-        <Icon
-          icon="close"
-          class="transition-colors text-primary hover:text-primary-dark"
-        />
+        <Icon icon="close" class="transition-colors text-primary hover:text-primary-dark" />
       </button>
     </div>
   </div>

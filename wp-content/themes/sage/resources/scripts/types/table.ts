@@ -4,12 +4,12 @@ export enum SortDirection {
   Desc = 'desc'
 }
 
-interface TableColum {
+interface TableColumn {
   label: string;
   name: string;
 }
 
-export const TableColumns: TableColum[] = [
+export const TableColumns: TableColumn[] = [
   {
     label: 'Name',
     name: 'name'
