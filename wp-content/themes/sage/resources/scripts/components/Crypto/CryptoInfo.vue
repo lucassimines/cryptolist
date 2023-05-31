@@ -87,7 +87,7 @@ const percentage = computed(() => {
           <span>{{ USDollar.format(props.coin?.market_data?.low_24h?.usd) }}</span>
         </div>
         <div>
-          <span>{{ USDollar.format(props.coin?.market_data?.low_24h?.usd) }}</span>
+          <span>{{ USDollar.format(props.coin?.market_data?.high_24h?.usd) }}</span>
         </div>
       </div>
     </header>
